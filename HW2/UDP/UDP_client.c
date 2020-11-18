@@ -108,8 +108,6 @@ int main(int argc, char **argv)
 		}
 	}
 	close(my_sock);
-	sprintf(message, "wc %s", fname);
-	system(message);
 	return 0;
 }
 /*get message&header, return body*/
