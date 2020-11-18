@@ -70,7 +70,6 @@ int main(int argc, char **argv)
 		str_len = recvfrom(serv_sock,message, BUFSIZE,0,
 				  (struct sockaddr*)&clnt_addr, &clnt_addr_size);
 			if(strncmp(message,file_header,strlen(file_header))==0){
-				printf("Reset FP\n");
 				fname = get_body(message, file_header);
 				strcpy(ACK+3,fname);
 				sendto(serv_sock,ACK,strlen(ACK),0,
@@ -97,7 +96,6 @@ int main(int argc, char **argv)
 			}
 		i++;
 		}
-		printf("File received: %d * %d\n", i,BUFSIZE);
 		setsockopt(serv_sock, SOL_SOCKET,SO_RCVTIMEO,&TOval,TOlen);
 		i=0;
 		while(1){
