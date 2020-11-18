@@ -53,18 +53,17 @@ int main(int argc, char **argv)
 		str_len = recvfrom(my_sock, message, BUFSIZE,0,
 			(struct sockaddr*)&from_addr, &addr_size);
 		if(str_len==-1){
-			printf("Timeout\n");
 			continue;/*timeout, resend filename*/
 		}else{
 			message[str_len]=0;
 			if(strcmp(fname, get_body(message, ACK_header))==0){
+				printf("File name delivered: %s\n",get_body(message, ACK_header));
 				break;/*file name transfer success*/
 			}else{
 				continue;/*resend filename*/
 			}
 		}
 	}
-	printf("Handshaking success\n");
 	sleep(3);
 	/*Start sending file*/
 	if((fp = fopen(fname,"rb"))==NULL){
@@ -79,19 +78,16 @@ int main(int argc, char **argv)
 	}
 	sleep(5);
 	sendto(my_sock,end_msg,strlen(end_msg),0,(struct sockaddr*)&serv_addr,sizeof(serv_addr));
-	printf("%d * %d\n",i,BUFSIZE);
 	while(1){
 		str_len = recvfrom(my_sock, message, BUFSIZE,0,
 			(struct sockaddr*)&from_addr, &addr_size);
 		if(str_len==-1){
-			printf("END Timeout\n");
 			sendto(my_sock,end_msg,strlen(end_msg),0,(struct sockaddr*)&serv_addr,sizeof(serv_addr));
 		}else{
 			message[str_len]=0;
 			if(strcmp("END",message)==0){
 				break;/*END successfully received*/
 			}else{
-				printf("END message damaged: %s\n",message);
 				continue;/*resend ""\0 when timeout*/
 			}
 		}
