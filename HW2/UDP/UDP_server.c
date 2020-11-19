@@ -94,10 +94,8 @@ int main(int argc, char **argv)
 			}else{
 			fwrite(message, sizeof(char), str_len, fp);
 			}
-		i++;
 		}
 		setsockopt(serv_sock, SOL_SOCKET,SO_RCVTIMEO,&TOval,TOlen);
-		i=0;
 		while(1){
 			sprintf(message,"END");
 			sendto(serv_sock,message,strlen(message),0,
@@ -110,13 +108,9 @@ int main(int argc, char **argv)
 			}else if(strcmp(message,"END")==0){
 				break;
 			}else{
-				i++;
 				continue;
 			}
 		}
-		/*Check file received*/
-		sprintf(message,"wc %s", fname);
-		system(message);
 		/*Reset Socket option*/
 		setsockopt(serv_sock, SOL_SOCKET,SO_RCVTIMEO,&TOinit,TOinitlen);
 		free(fname);
