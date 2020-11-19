@@ -24,7 +24,7 @@ int main (int argc, char **argv)
   //socket
   sock = socket (PF_INET, SOCK_STREAM, 0);
   if (sock == -1)
-    error_handling ("TCP 소켓 생성 오류");
+    error_handling ("TCP socket error");
   
   //connect
   serv_addr.sin_family = AF_INET;
